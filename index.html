@@ -24,40 +24,51 @@
 
 <body>
 
-  <div class="container d-flex flex-column justify-content-center align-items-center my-5">
-    <h1 class="my-3 position-relative">Bookmarker</h1>
-    <div class="bookmark w-100 py-4 mt-5 d-flex flex-column justify-content-center align-items-center">
-      <h2 class="tit">
-        <i class="fa-solid fa-bookmark"></i>
-        Bookmark your favorite sites
-        <i class="fa-solid fa-bookmark"></i>
-      </h2>
-      <div class="w-100 d-flex flex-column justify-content-center p-3">
-        <label for="Name" class="pb-2 fw-bold">
-          <i class="fa-solid fa-book-bookmark pe-2"></i>Site Name</label>
-        <input type="text" oninput="validation(this)" placeholder="Bookmark Name" class="form-control" id="Name">
-
-        <label for="URL" class="pb-2 pt-4 fw-bold">
-          <i class="fa-solid fa-link pe-2"></i>Site URL</label>
-        <input type="url" oninput="validation(this)" placeholder="Website URL" class="form-control" id="URL">
-      </div>
-
-      <button class="btn sub px-5" id="submitBtn">Submit</button>
+  <div class="container my-5 text-center d-none" id="signupDiv">
+    <div class="sign m-auto p-5">
+      <h1>Smart Login System</h1>
+      <input oninput="validation(this)" id="signupName" class="form-control my-3" placeholder="Enter your name" type="text">
+      <input oninput="validation(this)" id="signupEmail" class="form-control my-3" placeholder="Enter your email" type="email">
+      <input oninput="validation(this)" id="signupPassword" class="form-control my-3" placeholder="Enter your password" type="password">
+      <p id="signupMessage"></p>
+      <button class="btn btn-outline-info w-100 my-3" id="signupBtn">Sign Up</button>
+      <p class="text-white">You have an account? <a class="text-white text-decoration-none fw-bold" id="signinLink"> Sign in</a></p>
     </div>
+  </div>
 
-    <table class="table mt-4 text-center bg-light">
-      <thead>
-        <tr>
-          <th class="text-capitalize">index</th>
-          <th class="text-capitalize">Website Name</th>
-          <th class="text-capitalize">Visit</th>
-          <th class="text-capitalize">Delete</th>
-        </tr>
-      </thead>
-      <tbody id="tableContent">
+  <div class="container my-5 text-center" id="signinDiv">
+    <div class="sign m-auto p-5">
+      <h1>Smart Login System</h1>
+      <input id="signinEmail" class="form-control my-3" placeholder="Enter your email" type="email">
+      <input id="signinPassword" class="form-control my-3" placeholder="Enter your password" type="password">
+      <p id="signinMessage"></p>
+      <button class="btn btn-outline-info w-100 my-3" id="signinBtn">Login</button>
+      <p class="text-white">Don’t have an account? <a class="text-white text-decoration-none fw-bold" id="signupLink"> Sign Up</a></p>
+    </div>
+  </div>
 
-      </tbody>
-    </table>
+
+  <nav class="navbar navbar-expand-lg navbar-dark sign w-100 fixed-top d-none" id="nav">
+    <div class="container">
+      <a class="navbar-brand" href="#">SMART LOGIN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse flex-row-reverse" id="navbarSupportedContent">
+        <ul class="navbar-nav  mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-warning " id="Logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container text-center vh-100 d-flex align-items-center d-none" id="welcome">
+    <div class="sign m-auto w-75 p-5">
+        <h1 id="username"></h1>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

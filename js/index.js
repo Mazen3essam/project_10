@@ -1,91 +1,194 @@
-var namee = document.getElementById("Name");
-var url = document.getElementById("URL");
-var sub = document.getElementById("submitBtn")
+var signupName = document.getElementById("signupName");
+var signupEmail = document.getElementById("signupEmail");
+var signupPass = document.getElementById("signupPassword");
+var signupBtn = document.getElementById("signupBtn");
+var signinLink = document.getElementById("signinLink");
+var signupDiv = document.getElementById("signupDiv");
+
+var signinDiv = document.getElementById("signinDiv");
+var signinBtn = document.getElementById("signinBtn");
+var signinEmail = document.getElementById("signinEmail");
+var signinPass = document.getElementById("signinPassword");
+var signupLink = document.getElementById("signupLink");
+
+var nav = document.getElementById("nav");
+var welcome = document.getElementById("welcome");
+
+var users;
+var curuntUser;
+var check = 1;
 
 
-var Bookmarks;
 
-if (localStorage.getItem("Bookmarks") == null) {
-  Bookmarks = [];
+
+if (localStorage.getItem("users") == null) {
+  users = [];
+  check = 0
 } else {
-  Bookmarks = JSON.parse(localStorage.getItem("Bookmarks"));
-  display();
+  users = JSON.parse(localStorage.getItem("users"));
 }
 
-sub.addEventListener("click",function test(){ addBookmark() })
+if (localStorage.getItem("curuntUser") == null) {
+  curuntUser = [];
+  signupDiv.classList.add("d-none")
+  signinDiv.classList.remove("d-none")
+  nav.classList.add("d-none")
+  welcome.classList.add("d-none")
+} else {
+  curuntUser = JSON.parse(localStorage.getItem("curuntUser"));
 
-function addBookmark() {
-  if(namee.classList.contains("is-valid")&& url.classList.contains("is-valid"))
+  signinDiv.classList.add("d-none")
+  signupDiv.classList.add("d-none")
+  nav.classList.remove("d-none")
+  welcome.classList.remove("d-none")
+        
+  sayWelcome()
+}
+
+
+signupBtn.addEventListener("click", function test() {
+  signup();
+});
+
+signinBtn.addEventListener("click", function test() {
+  login();
+});
+
+signinLink.addEventListener("click", function test() {
+  signupDiv.classList.add("d-none")
+  signinDiv.classList.remove("d-none")
+  nav.classList.add("d-none")
+  welcome.classList.add("d-none")
+});
+
+signupLink.addEventListener("click", function test() {
+  signinDiv.classList.add("d-none")
+  signupDiv.classList.remove("d-none")
+  nav.classList.add("d-none")
+  welcome.classList.add("d-none")
+});
+
+document.getElementById("Logout").addEventListener("click", function test() {
+
+  signupDiv.classList.add("d-none")
+  signinDiv.classList.remove("d-none")
+  nav.classList.add("d-none")
+  welcome.classList.add("d-none")
+
+  Logout()
+});
+
+
+
+
+function signup() {
+
+  if(signupName.classList.contains("valid")&& signupEmail.classList.contains("valid")&& signupPass.classList.contains("valid"))
   {
-    var Bookmark = {
-    bookmarkName: namee.value,
-    bookmarkUrl: url.value,
-    };
+    for (var i = 0; i < users.length; i++) {
+      if (signupEmail.value == users[i].email) {
+        document.getElementById("signupMessage").innerHTML = `<span class="text-danger m-3"> email already exists </span>`;
+        check = 1 ;   
+        break;     
+      }
+      else{
+        check = 0 ;
+      }
+    }
+    if (check == 0) {
+      var newUser = {
+      name: signupName.value,
+      email: signupEmail.value,
+      password: signupPass.value,
+      };
 
-    Bookmarks.push(Bookmark);
-    localStorage.setItem("Bookmarks", JSON.stringify(Bookmarks));
-    display();
-    clear();
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("signupMessage").innerHTML = `<span class="text-success m-3">Success</span>`;
+
+      clear();
+    }
+    
   }
   else{
-    Swal.fire({
-        icon: "error",
-        title: "Site Name or Url is not valid, Please follow the rules below :",
-        text: "Site name must contain at least 3 characters and Site URL must be a valid one",
-      });
+    document.getElementById("signupMessage").innerHTML = `<span class="text-danger m-3"> name must contain at least 3 characters and email must contain at least 3 characters then @gmail.com and password must contain at least 4 characters</span>`;
   }
+
   
 }
 
 function clear() {
-  namee.value = null;
-  url.value = null;
-  namee.classList.remove("is-valid");
-  url.classList.remove("is-valid");
-}
+  signupName.value = null;
+  signupEmail.value = null;
+  signupPass.value = null;
 
-function display() {
-  var shanta = "";
-  for (var i = 0; i < Bookmarks.length; i++) {
-    shanta += `
-              <tr>
-                <td>${i + 1}</td>
-                <td>${Bookmarks[i].bookmarkName}</td>              
-                <td>
-                  <button onclick="window.open('${Bookmarks[i].bookmarkUrl}','_blank')" class="btn visit" id="visitBtn">
-                    <i class="fa-solid fa-eye pe-2"></i>Visit
-                  </button>
-                </td>
-                <td>
-                  <button onclick="deleteBookmark(${i})" class="btn delete pe-2">
-                    <i class="fa-solid fa-trash-can"></i>
-                    Delete
-                  </button>
-                </td>
-            </tr>
-            `;
-  }
-  document.getElementById("tableContent").innerHTML = shanta;
-}
+  signinEmail.value = null;
+  signinPass.value = null;
 
-function deleteBookmark(index) {
-  Bookmarks.splice(index, 1);
-  display();
-  localStorage.setItem("Bookmarks", JSON.stringify(Bookmarks));
+  signupName.classList.remove("valid");
+  signupEmail.classList.remove("valid");
+  signupPass.classList.remove("valid");
+
+  check = 1;
 }
 
 function validation(element) {
 
   var regex = {
-    Name:  /^\w{3,}(\s+\w+)*$/,
-    URL : /^(https?:\/\/)?(w{3}\.)?\w+\.\w{2,}\/?(:\d{2,5})?(\/\w+)*$/,
+    signupName: /^\w{3,}(\s+\w+)*$/ ,
+    signupEmail:/^\w{3,}@gmail\.com$/ ,
+    signupPassword:/^\w{4,}$/ ,
   };
-  
+
   if (regex[element.id].test(element.value) == true ) {
-    element.classList.add("is-valid")
-    element.classList.remove("is-invalid")
+    element.classList.add("valid")
+    element.classList.remove("invalid")
   } else {
-    element.classList.add("is-invalid")
-    element.classList.remove("is-valid")
+    element.classList.add("invalid")
+    element.classList.remove("valid")
   }
+  
+}
+
+function login() {
+  for (var i = 0; i < users.length; i++) {
+    if (signinEmail.value == users[i].email) {
+      if(signinPass.value == users[i].password){
+
+        var user = {
+          name: users[i].name,
+          email: users[i].email,
+          password: users[i].password,
+        };
+    
+        curuntUser.push(user);
+        localStorage.setItem("curuntUser", JSON.stringify(curuntUser));
+
+        signinDiv.classList.add("d-none")
+        signupDiv.classList.add("d-none")
+        nav.classList.remove("d-none")
+        welcome.classList.remove("d-none")
+
+        
+        sayWelcome()
+        clear()
+      }
+      else{
+        document.getElementById("signinMessage").innerHTML = `<span class="text-danger m-3"> incorrect password </span>`;
+      }
+      break;
+    }
+  }
+  if(i == users.length){
+    document.getElementById("signinMessage").innerHTML = `<span class="text-danger m-3"> email not found </span>`;
+  }
+}
+
+function sayWelcome() {
+  document.getElementById("username").innerHTML = `welcome ${curuntUser[0].name}`;
+}
+
+function Logout() {
+  localStorage.removeItem("curuntUser");
 }
